@@ -1,6 +1,31 @@
 {
-  "headers":[
-    {"title":"测试"},
-    {"title":"测试2"}
-  ]
+  "index": {
+    "breadcrumb": {
+
+    },
+    "custom": [{
+      "label": "姓名",
+      "key": "name"
+    }],
+    "headers": [{
+        "title": "测试"
+      },
+      {
+        "title": "测试2"
+      }
+    ]
+  },
+  "detail": {
+
+  },
+  "service": {
+
+  },
+  "route": {
+    "index": "",
+    "detail": ""
+  },
+  "model": {
+
+  }
 }
