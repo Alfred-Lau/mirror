@@ -1,0 +1,32 @@
+{
+  "name": "folder-mirror",
+  "version": "0.0.9",
+  "description": "Quickly create project routing file structure.",
+  "bin": {
+    "mirror": "bin/index.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "dev": "tsc --watch",
+    "start": "babel-node lib/index.js && npm run change-log",
+    "change-log": "bash ./dingding-changelog.sh"
+  },
+  "keywords": [],
+  "author": "潇湘",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^11.9.5",
+    "babel": "^6.23.0",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.1.2",
+    "prettier-eslint": "^8.8.2",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.17.1",
+    "prettier": "^1.16.4"
+  }
+}
