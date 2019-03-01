@@ -1,15 +1,16 @@
 import * as path from 'path'
 import { IndexView } from './IndexView'
 
-const TARGET = path.join(process.cwd(), '/test', 'config.json')
+const TARGET = path.join(process.cwd(), '/test', 'config.js')
 
 class Generator {
   private moduleName: string;
-  private content: string;
+  private content: object;
 
   constructor(moduleName: string) {
     this.moduleName = moduleName;
     this.content = require(TARGET)
+
   }
   _getMetaData(filePath: string) {
     

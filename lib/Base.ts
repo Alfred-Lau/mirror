@@ -27,6 +27,7 @@ class Base {
     } catch (e) {
       if (e) {
         // ignore
+        console.error(e)
       }
     }
   }
