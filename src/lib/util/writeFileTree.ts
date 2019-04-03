@@ -31,7 +31,6 @@ export = async function writeFileTree(
 	Object.keys(files).forEach(name => {
 		const filePath = path.join(dir, name);
 		fs.ensureDirSync(path.dirname(filePath));
-		console.log(`creating ${filePath.split('/').pop()}`);
 		fs.writeFileSync(filePath, files[name]);
 	});
 };

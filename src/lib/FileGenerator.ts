@@ -23,7 +23,6 @@ export = class FileGenerator {
 	}
 
 	render(source: string, data: any) {
-		console.log(source);
 		this._injectFileMiddleware(async (files: any) => {
 			const _files = await globby(["**/*"], {
 				cwd: source,

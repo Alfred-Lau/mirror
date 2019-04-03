@@ -2,12 +2,18 @@ import * as debug from "debug";
 import * as home from "user-home";
 import * as _ from "lodash";
 import * as inquirer from "inquirer";
+import chalk from "chalk";
 import * as path from "path";
 import fileMaker from "../FileMaker";
 import { IListMeta, IRes } from "../interfaces/list";
+import { choosePort, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
+
 import clone from "../util/download";
 
 const HOME_DEST = home;
+const DEFAULT_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8082;
+const HOST = process.env.HOST || "0.0.0.0";
+const protocol = process.env.HTTPS === "true" ? "https" : "http";
 
 const _camelize = arr => {
 	const [small, ...rest] = arr;
@@ -42,6 +48,8 @@ export const formatMate = (name: string) => {
 };
 
 export default async function list(dir, cmd) {
+	const port = await choosePort(HOST, DEFAULT_PORT);
+	const urls = prepareUrls(protocol, HOST, port);
 	debug("mi:list")(dir, cmd);
 	const choices = [
 		{
@@ -86,7 +94,7 @@ export default async function list(dir, cmd) {
 			type: "input",
 			name: "name",
 			message: "请输入模块名称",
-			default: "demo",
+			default: "Best",
 			validate: name => {
 				if (/^[A-Z]+/.test(name)) {
 					return true;
@@ -120,6 +128,20 @@ export default async function list(dir, cmd) {
 		promptData,
 		tmpTemplateSrc
 	});
-
 	await maker.make();
+
+	if (urls.lanUrlForTerminal) {
+		console.log(
+			`  ${chalk.bold("Local:")}            ${urls.localUrlForTerminal}#${
+				promptData.url
+			}`
+		);
+		console.log(
+			`  ${chalk.bold("On Your Network:")}  ${urls.lanUrlForTerminal}#${
+				promptData.url
+			}`
+		);
+	} else {
+		console.log(`  ${urls.localUrlForTerminal}#${promptData.url}`);
+	}
 }
