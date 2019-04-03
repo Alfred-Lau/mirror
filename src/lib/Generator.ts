@@ -1,4 +1,4 @@
-import * as path from 'path'
+const path = require('path')
 import { IndexView } from './IndexView'
 
 const TARGET = path.join(process.cwd(), '/test', 'config.js')
@@ -23,4 +23,4 @@ class Generator {
 
 export {
   Generator
-};
+}

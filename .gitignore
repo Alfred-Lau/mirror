@@ -1,5 +1,4 @@
 .vscode
 lib/**/*.js
-bin/*.js
 node_modules
 package-lock.json*
