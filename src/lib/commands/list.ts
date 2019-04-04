@@ -31,7 +31,7 @@ export const formatMate = (name: string, label) => {
 	/* AaaBbb */
 	const className = name;
 	/* /api/aaa-bbb/list */
-	const serviceApi = `/api/${origin.join("-")}/list`;
+	const serviceApi = `${origin.join("-")}`;
 	/* /aaa-bbb/list */
 	const url = `/${origin.join("-")}/list`;
 	/* /api/aaa-bbb/list */
