@@ -12,9 +12,10 @@ export interface IRes {
 }
 
 export interface IPromptData {
-	namespace:string,
-	className:string,
-	serviceApi:string,
-	url:string,
-	mockUrl:string
+	namespace: string;
+	className: string;
+	serviceApi: string;
+	url: string;
+	mockUrl: string;
+	label: string;
 }

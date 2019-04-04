@@ -59,7 +59,11 @@ class FileMaker {
 		await this.resolveFiles();
 		await writeFileTree(dest, this.files, initialFiles);
 
-		const source = path.resolve(HOME_DEST, ".mirror", "mockData/list.js");
+		const source = path.resolve(
+			HOME_DEST,
+			".mirror",
+			`mockData/${this.promptData.label}.js`
+		);
 		const target = `${this.context}/mockData/${this.promptData.namespace}.js`;
 
 		const content = ejs.render(fs.readFileSync(source, "utf-8"), {

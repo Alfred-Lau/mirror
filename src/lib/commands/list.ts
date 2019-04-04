@@ -22,7 +22,7 @@ const _camelize = arr => {
 };
 
 /* AaaBbb */
-export const formatMate = (name: string) => {
+export const formatMate = (name: string, label) => {
 	/* aaaBbb */
 	const origin = name.match(/[A-Z][a-z]*/g).map(item => {
 		return item.toLowerCase();
@@ -41,7 +41,8 @@ export const formatMate = (name: string) => {
 		className,
 		serviceApi,
 		url,
-		mockUrl
+		mockUrl,
+		label
 	};
 };
 
@@ -52,7 +53,7 @@ export default async function list(dir, cmd) {
 	const urls = prepareUrls(protocol, HOST, port);
 	const choices = [
 		{
-			name: "简单列表",
+			name: "简单列表(40%)",
 			value: {
 				label: "BasicList",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
@@ -73,7 +74,7 @@ export default async function list(dir, cmd) {
 			}
 		},
 		{
-			name: "复杂列表",
+			name: "复杂列表(60%)",
 			value: {
 				label: "BasicComb2",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
@@ -112,7 +113,7 @@ export default async function list(dir, cmd) {
 		}
 	]);
 	const meta: IListMeta = await inquirer.prompt(questions);
-	const promptData = formatMate(meta.name);
+	const promptData = formatMate(meta.name, res.template.label);
 
 	// await clone(res.template.remote, "feature/template", `${HOME_DEST}/.mirror`);
 	await clone(
