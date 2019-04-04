@@ -1,8 +1,7 @@
 import * as path from "path";
-import debug from 'debug'
-const ejs = require("ejs");
-const FileGenerator = require("./FileGenerator");
-const writeFileTree = require("./util/writeFileTree");
+import * as ejs from "ejs";
+import FileGenerator from "./FileGenerator";
+import writeFileTree from "./util/writeFileTree";
 import { IPromptData } from "./interfaces/list";
 
 class FileMaker {
@@ -19,16 +18,27 @@ class FileMaker {
 		this.fileMiddleWares = [];
 		this.files = {};
 
-		const api = new FileGenerator(this);
-		api.render(`${this.tmpTemplateSrc}`, this.promptData);
+		try {
+			const api = new FileGenerator(this);
+			api.render(`${this.tmpTemplateSrc}`, this.promptData);
+		} catch (err) {
+			console.error("fileMaker", err);
+		}
 	}
 
+	async generateMockFile(file: string, content) {}
+
 	async make() {
-		const dest = path.join(this.context, "src/routes", this.promptData.className);
+		const dest = path.join(
+			this.context,
+			"src/routes",
+			this.promptData.className
+		);
 		const initialFiles = Object.assign({}, this.files);
 		await this.resolveFiles();
 		await writeFileTree(dest, this.files, initialFiles);
-		debug('create mocker file')
+
+		// console.log("mock file");
 	}
 
 	async resolveFiles() {

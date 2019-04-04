@@ -7,9 +7,10 @@ var chalk = require("chalk");
 const { Generator } = require("../lib/Generator");
 const template = path.resolve(__dirname, "..", "lib/template");
 import list from "../lib/commands/list";
+const pkg = require(path.resolve(__dirname, "../../package.json"));
 
 /* TODO: 从 pkg file获取版本号 */
-program.version("0.0.1", "-v, --version");
+program.version(pkg.version, "-v, --version");
 
 program.option("-l", "list the supported template", list);
 

@@ -19,7 +19,7 @@ function deleteRemovedFiles(
 	);
 }
 
-export = async function writeFileTree(
+export default async function writeFileTree(
 	dir: string,
 	files: any,
 	previousFiles: any
@@ -33,4 +33,4 @@ export = async function writeFileTree(
 		fs.ensureDirSync(path.dirname(filePath));
 		fs.writeFileSync(filePath, files[name]);
 	});
-};
+}

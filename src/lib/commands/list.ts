@@ -1,4 +1,3 @@
-import * as debug from "debug";
 import * as home from "user-home";
 import * as _ from "lodash";
 import * as inquirer from "inquirer";
@@ -50,7 +49,6 @@ export const formatMate = (name: string) => {
 export default async function list(dir, cmd) {
 	const port = await choosePort(HOST, DEFAULT_PORT);
 	const urls = prepareUrls(protocol, HOST, port);
-	debug("mi:list")(dir, cmd);
 	const choices = [
 		{
 			name: "简单列表",
@@ -94,7 +92,6 @@ export default async function list(dir, cmd) {
 			type: "input",
 			name: "name",
 			message: "请输入模块名称",
-			default: "Best",
 			validate: name => {
 				if (/^[A-Z]+/.test(name)) {
 					return true;
@@ -113,16 +110,24 @@ export default async function list(dir, cmd) {
 			choices
 		}
 	]);
+	const meta: IListMeta = await inquirer.prompt(questions);
+	const promptData = formatMate(meta.name);
 
-	await clone(res.template.remote, "feature/template", `${HOME_DEST}/.mirror`);
+	// await clone(res.template.remote, "feature/template", `${HOME_DEST}/.mirror`);
+	await clone(
+		`direct:${res.template.remote}#feature/template`,
+		`${HOME_DEST}/.mirror`,
+		{
+			clone: true
+		}
+	);
+
 	const tmpTemplateSrc = path.resolve(
 		HOME_DEST,
 		".mirror/src/routes",
 		res.template.label
 	);
 
-	const meta: IListMeta = await inquirer.prompt(questions);
-	const promptData = formatMate(meta.name);
 	const maker = new fileMaker({
 		context: process.cwd(),
 		promptData,
