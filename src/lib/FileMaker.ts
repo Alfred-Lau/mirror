@@ -56,9 +56,6 @@ class FileMaker {
 			this.promptData.className
 		);
 		const initialFiles = Object.assign({}, this.files);
-		await this.resolveFiles();
-		await writeFileTree(dest, this.files, initialFiles);
-
 		const source = path.resolve(
 			HOME_DEST,
 			".mirror",
@@ -70,7 +67,22 @@ class FileMaker {
 			mockUrl: this.promptData.mockUrl
 		});
 
+		await this.resolveFiles();
+		await writeFileTree(dest, this.files, initialFiles);
+
+		await this.hack();
 		await this.generateMockFile(target, content);
+
+		setTimeout(() => {
+			fs.writeFileSync(target, "/* data */", {
+				flag: "a"
+			});
+		}, 5000);
+	}
+
+	async hack() {
+		const configFilePath = path.resolve(this.context, "src/router-config.js");
+		fs.removeSync(configFilePath);
 	}
 
 	async resolveFiles() {

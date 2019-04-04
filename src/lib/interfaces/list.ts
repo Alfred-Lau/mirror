@@ -18,4 +18,5 @@ export interface IPromptData {
 	url: string;
 	mockUrl: string;
 	label: string;
+	name: string;
 }

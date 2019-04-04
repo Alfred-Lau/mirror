@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import * as inquirer from "inquirer";
 import chalk from "chalk";
 import * as path from "path";
+import * as fs from "fs-extra";
 import fileMaker from "../FileMaker";
 import { IListMeta, IRes } from "../interfaces/list";
 import { choosePort, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
@@ -37,6 +38,7 @@ export const formatMate = (name: string, label) => {
 	/* /api/aaa-bbb/list */
 	const mockUrl = serviceApi;
 	return {
+		name,
 		namespace,
 		className,
 		serviceApi,
@@ -113,6 +115,36 @@ export default async function list(dir, cmd) {
 		}
 	]);
 	const meta: IListMeta = await inquirer.prompt(questions);
+
+	/*  检测是否存在同名目录，处理冲突 */
+
+	const targetDir = path.resolve(process.cwd(), "src/routes", meta.name || ".");
+
+	if (fs.existsSync(targetDir)) {
+		const {
+			action
+		}: {
+			action?: string | boolean;
+		} = await inquirer.prompt([
+			{
+				name: "action",
+				type: "list",
+				message: `页面 ${chalk.cyan(meta.name)} 已经存在. 您可以:`,
+				choices: [
+					{ name: "合并", value: "merge" },
+					{ name: "覆盖", value: "overwrite" },
+					{ name: "我再想想", value: false }
+				]
+			}
+		]);
+		if (!action) {
+			return;
+		} else if (action === "overwrite") {
+			console.log(`\移除 ${chalk.cyan(meta.name)}...`);
+			await fs.remove(targetDir);
+		}
+	}
+
 	const promptData = formatMate(meta.name, res.template.label);
 
 	// await clone(res.template.remote, "feature/template", `${HOME_DEST}/.mirror`);
