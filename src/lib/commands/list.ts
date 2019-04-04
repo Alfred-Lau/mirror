@@ -53,7 +53,7 @@ export default async function list(dir, cmd) {
 	const urls = prepareUrls(protocol, HOST, port);
 	const choices = [
 		{
-			name: "简单列表(40%)",
+			name: "简单列表(覆盖中台40%列表页面)",
 			value: {
 				label: "BasicList",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
@@ -74,7 +74,7 @@ export default async function list(dir, cmd) {
 			}
 		},
 		{
-			name: "复杂列表(60%)",
+			name: "复杂列表(覆盖中台60%列表页面)",
 			value: {
 				label: "BasicComb2",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
