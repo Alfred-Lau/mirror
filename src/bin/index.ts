@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
 var program = require("commander");
-var folders = require("../lib/util/folder");
 var path = require("path");
 var chalk = require("chalk");
 const { Generator } = require("../lib/Generator");
-const template = path.resolve(__dirname, "..", "lib/template");
 import list from "../lib/commands/list";
 const pkg = require(path.resolve(__dirname, "../../package.json"));
 
@@ -14,26 +12,26 @@ program.version(pkg.version, "-v, --version");
 
 program.option("-l", "list the supported template", list);
 
-program
-	.command("new <page>")
-	.option("-n, --page", "input a name for your page")
-	.action(function(dir, cmd) {
-		const target = path.resolve(__dirname, "..", dir);
-		const pageName = process.argv.pop() || "demo";
-		folders.deleteAll(target);
-		folders.copyDir(template, pageName, `${process.cwd()}/src/routes`);
-	});
+// program
+// 	.command("new <page>")
+// 	.option("-n, --page", "input a name for your page")
+// 	.action(function(dir, cmd) {
+// 		const target = path.resolve(__dirname, "..", dir);
+// 		const pageName = process.argv.pop() || "demo";
+// 		folders.deleteAll(target);
+// 		folders.copyDir(template, pageName, `${process.cwd()}/src/routes`);
+// 	});
 
-program.command("g <page>").action(async (dir, cmd) => {
-	require("../lib/create")(dir, cmd);
-});
+// program.command("g <page>").action(async (dir, cmd) => {
+// 	require("../lib/create")(dir, cmd);
+// });
 
-program.command("add <module-name>").action(async (dir, cmd) => {
-	const instance = new Generator(dir);
-	try {
-		await instance.init();
-	} catch (e) {}
-});
+// program.command("add <module-name>").action(async (dir, cmd) => {
+// 	const instance = new Generator(dir);
+// 	try {
+// 		await instance.init();
+// 	} catch (e) {}
+// });
 
 // 不支持命令默认回调
 program.arguments("<command>").action(cmd => {

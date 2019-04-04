@@ -6,7 +6,6 @@ import * as path from "path";
 import fileMaker from "../FileMaker";
 import { IListMeta, IRes } from "../interfaces/list";
 import { choosePort, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
-
 import clone from "../util/download";
 
 const HOME_DEST = home;
@@ -47,7 +46,9 @@ export const formatMate = (name: string) => {
 };
 
 export default async function list(dir, cmd) {
-	const port = await choosePort(HOST, DEFAULT_PORT);
+	// const port = await choosePort(HOST, DEFAULT_PORT);
+	const port =
+		require(`${process.cwd()}/config/index.js`).dev.port || DEFAULT_PORT;
 	const urls = prepareUrls(protocol, HOST, port);
 	const choices = [
 		{

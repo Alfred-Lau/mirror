@@ -1,6 +1,6 @@
 {
   "name": "folder-mirror",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "description": "Quickly create project routing file structure.",
   "bin": {
     "mi": "lib/bin/index.js"
@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/ejs": "^2.6.3",
+    "@types/fs-extra": "^5.0.5",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.9.5",
     "babel": "^6.23.0",
