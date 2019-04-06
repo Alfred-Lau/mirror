@@ -147,7 +147,6 @@ export default async function list(dir, cmd) {
 
 	const promptData = formatMate(meta.name, res.template.label);
 
-	// await clone(res.template.remote, "feature/template", `${HOME_DEST}/.mirror`);
 	await clone(
 		`direct:${res.template.remote}#feature/template`,
 		`${HOME_DEST}/.mirror`,

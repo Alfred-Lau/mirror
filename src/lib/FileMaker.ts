@@ -71,7 +71,12 @@ class FileMaker {
 		await writeFileTree(dest, this.files, initialFiles);
 
 		await this.hack();
-		await this.generateMockFile(target, content);
+
+		try {
+			await this.generateMockFile(target, content);
+		} catch (err) {
+			console.error(err);
+		}
 
 		setTimeout(() => {
 			fs.writeFileSync(target, "/* data */", {

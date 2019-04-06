@@ -7,7 +7,6 @@ const { Generator } = require("../lib/Generator");
 import list from "../lib/commands/list";
 const pkg = require(path.resolve(__dirname, "../../package.json"));
 
-/* TODO: 从 pkg file获取版本号 */
 program.version(pkg.version, "-v, --version");
 
 program.option("-l", "list the supported template", list);
@@ -58,3 +57,7 @@ program.parse(process.argv);
 if (!process.argv.slice(2).length) {
 	program.outputHelp();
 }
+
+process.on("unhandledRejection", err => {
+	console.error(err);
+});
