@@ -5,9 +5,11 @@ import chalk from "chalk";
 import * as path from "path";
 import * as fs from "fs-extra";
 import fileMaker from "../FileMaker";
+import Notifier from "../Notifier";
 import { IListMeta, IRes } from "../interfaces/list";
 import { choosePort, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
 import clone from "../util/download";
+import getUser from "../util/getUser";
 
 const HOME_DEST = home;
 const DEFAULT_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8082;
@@ -34,7 +36,7 @@ export const formatMate = (name: string, label) => {
 	/* /api/aaa-bbb/list */
 	const serviceApi = `${origin.join("-")}`;
 	/* /aaa-bbb/list */
-	const url = `/${origin.join("-")}/list`;
+	const url = `/${origin.join("-")}`;
 	/* /api/aaa-bbb/list */
 	const mockUrl = serviceApi;
 	return {
@@ -78,14 +80,14 @@ export default async function list(dir, cmd) {
 		{
 			name: "复杂列表(覆盖中台60%列表页面)",
 			value: {
-				label: "BasicComb2",
+				label: "ComplexList",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		},
 		{
 			name: "复杂列表+详情",
 			value: {
-				label: "BasicComb2",
+				label: "ComplexComb",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		}
@@ -167,6 +169,19 @@ export default async function list(dir, cmd) {
 		tmpTemplateSrc
 	});
 	await maker.make();
+
+	/* notify */
+	const { name, email } = await getUser();
+
+	const notifier = new Notifier({
+		name,
+		email,
+		time: new Date(),
+		cmd: "list",
+		args: ["-l"]
+	});
+
+	notifier.notify();
 
 	if (urls.lanUrlForTerminal) {
 		console.log(
