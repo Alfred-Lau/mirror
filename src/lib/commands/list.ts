@@ -51,9 +51,17 @@ export const formatMate = (name: string, label) => {
 };
 
 export default async function list(dir, cmd) {
+	/* 判断是否在项目目录 */
 	// const port = await choosePort(HOST, DEFAULT_PORT);
-	const port =
-		require(`${process.cwd()}/config/index.js`).dev.port || DEFAULT_PORT;
+	let port;
+
+	try {
+		port = require(`${process.cwd()}/config/index.js`).dev.port || DEFAULT_PORT;
+	} catch (error) {
+		console.error("请确保在项目根目录执行操作");
+		process.exit(0);
+	}
+
 	const urls = prepareUrls(protocol, HOST, port);
 	const choices = [
 		{
