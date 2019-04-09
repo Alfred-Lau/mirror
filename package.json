@@ -1,6 +1,6 @@
 {
   "name": "folder-mirror",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "Quickly create project routing file structure.",
   "bin": {
     "mi": "lib/bin/index.js"
@@ -21,6 +21,7 @@
     "@types/fs-extra": "^5.0.5",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.9.5",
+    "@types/ora": "^3.2.0",
     "babel": "^6.23.0",
     "babel-eslint": "^10.0.1",
     "chai": "^4.1.2",
@@ -48,6 +49,7 @@
     "isbinaryfile": "^4.0.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
+    "ora": "^3.4.0",
     "prettier": "^1.16.4",
     "react-dev-utils": "^8.0.0",
     "user-home": "^2.0.0"

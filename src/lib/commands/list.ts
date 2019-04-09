@@ -8,8 +8,10 @@ import fileMaker from "../FileMaker";
 import Notifier from "../Notifier";
 import { IListMeta, IRes } from "../interfaces/list";
 import { choosePort, prepareUrls } from "react-dev-utils/WebpackDevServerUtils";
+import * as clearConsole from "react-dev-utils/clearConsole";
 import clone from "../util/download";
 import getUser from "../util/getUser";
+const ora = require("ora");
 
 const HOME_DEST = home;
 const DEFAULT_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8082;
@@ -176,7 +178,13 @@ export default async function list(dir, cmd) {
 		promptData,
 		tmpTemplateSrc
 	});
+
+	const spinner = ora();
+	spinner.text = "正在生成页面...";
+	spinner.color = "magenta";
+	spinner.start();
 	await maker.make();
+	spinner.stopAndPersist();
 
 	/* notify */
 	const { name, email } = await getUser();
@@ -189,20 +197,22 @@ export default async function list(dir, cmd) {
 		args: ["-l"]
 	});
 
-	notifier.notify();
+	await notifier.notify();
+
+	clearConsole();
 
 	if (urls.lanUrlForTerminal) {
 		console.log(
 			`  ${chalk.bold("Local:")}            ${urls.localUrlForTerminal}#${
 				promptData.url
-			}`
+			}/list`
 		);
 		console.log(
 			`  ${chalk.bold("On Your Network:")}  ${urls.lanUrlForTerminal}#${
 				promptData.url
-			}`
+			}/list`
 		);
 	} else {
-		console.log(`  ${urls.localUrlForTerminal}#${promptData.url}`);
+		console.log(`  ${urls.localUrlForTerminal}#${promptData.url}/list`);
 	}
 }

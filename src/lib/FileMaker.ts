@@ -5,6 +5,7 @@ import FileGenerator from "./FileGenerator";
 import writeFileTree from "./util/writeFileTree";
 import { IPromptData } from "./interfaces/list";
 import * as home from "user-home";
+const ora = require("ora");
 
 const HOME_DEST = home;
 
@@ -78,10 +79,16 @@ class FileMaker {
 			console.error(err);
 		}
 
+		const spinner = ora();
+		spinner.text = "正在mock数据...";
+		spinner.color = "magenta";
+		spinner.start();
+
 		setTimeout(() => {
 			fs.writeFileSync(target, "/* data */", {
 				flag: "a"
 			});
+			spinner.stopAndPersist();
 		}, 5000);
 	}
 

@@ -1,5 +1,5 @@
 import { REMOTE_HOST } from "./constant";
-import fetch from "isomorphic-fetch";
+import * as fetch from "isomorphic-fetch";
 import * as fs from "fs-extra";
 import * as USER_HOME from "user-home";
 
@@ -29,6 +29,7 @@ class Notifier {
 			}
 		} catch (err) {
 			console.error("notify error", err.message);
+			process.exit();
 		}
 	}
 }
