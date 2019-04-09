@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as events from "events";
 import * as fs from "fs-extra";
 import * as ejs from "ejs";
 import FileGenerator from "./FileGenerator";
@@ -9,19 +10,22 @@ const ora = require("ora");
 
 const HOME_DEST = home;
 
-class FileMaker {
+class FileMaker extends events.EventEmitter {
 	private context: string;
 	private tmpTemplateSrc: string;
 	private files: {};
+	private afterHandler: () => void;
 	private promptData: IPromptData;
 	private fileMiddleWares: any[];
 
 	constructor(opts = {}) {
+		super();
 		for (const opt in opts) {
 			this[opt] = opts[opt];
 		}
 		this.fileMiddleWares = [];
 		this.files = {};
+		this.on("mock", this.afterHandler);
 
 		try {
 			const api = new FileGenerator(this);
@@ -89,6 +93,7 @@ class FileMaker {
 				flag: "a"
 			});
 			spinner.stopAndPersist();
+			this.emit("mock");
 		}, 5000);
 	}
 
@@ -102,6 +107,10 @@ class FileMaker {
 		for (const middleware of this.fileMiddleWares) {
 			await middleware(files, ejs.render);
 		}
+	}
+
+	after(handler) {
+		this.on("mock", handler);
 	}
 }
 

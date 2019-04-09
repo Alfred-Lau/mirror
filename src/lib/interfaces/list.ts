@@ -5,6 +5,7 @@ export interface IListMeta {
 export interface IResItem {
 	label: string;
 	remote: string;
+	type: string;
 }
 
 export interface IRes {

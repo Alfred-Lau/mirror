@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import * as inquirer from "inquirer";
 import chalk from "chalk";
 import * as path from "path";
+import * as assert from "assert";
 import * as fs from "fs-extra";
 import fileMaker from "../FileMaker";
 import Notifier from "../Notifier";
@@ -70,6 +71,7 @@ export default async function list(dir, cmd) {
 			name: "简单列表(覆盖中台40%列表页面)",
 			value: {
 				label: "BasicList",
+				type: "list",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		},
@@ -77,6 +79,7 @@ export default async function list(dir, cmd) {
 			name: "详情",
 			value: {
 				label: "BasicDetail",
+				type: "detail/1",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		},
@@ -84,6 +87,7 @@ export default async function list(dir, cmd) {
 			name: "简单列表+详情",
 			value: {
 				label: "BasicComb",
+				type: "list",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		},
@@ -91,6 +95,7 @@ export default async function list(dir, cmd) {
 			name: "复杂列表(覆盖中台60%列表页面)",
 			value: {
 				label: "ComplexList",
+				type: "list",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		},
@@ -98,6 +103,7 @@ export default async function list(dir, cmd) {
 			name: "复杂列表+详情",
 			value: {
 				label: "ComplexComb",
+				type: "list",
 				remote: "git@git.cai-inc.com:paas-front/zcy-bestPractice-front.git"
 			}
 		}
@@ -107,7 +113,7 @@ export default async function list(dir, cmd) {
 		{
 			type: "input",
 			name: "name",
-			message: "请输入模块名称",
+			message: "请输入模块名称(首字母大写)",
 			validate: name => {
 				if (/^[A-Z]+/.test(name)) {
 					return true;
@@ -173,17 +179,39 @@ export default async function list(dir, cmd) {
 		res.template.label
 	);
 
+	const afterHandler = () => {
+		if (urls.lanUrlForTerminal) {
+			console.log(
+				`  ${chalk.bold("Local:")}            ${urls.localUrlForTerminal}#${
+					promptData.url
+				}/${res.template.type}`
+			);
+			console.log(
+				`  ${chalk.bold("On Your Network:")}  ${urls.lanUrlForTerminal}#${
+					promptData.url
+				}/${res.template.type}`
+			);
+		} else {
+			console.log(
+				`  ${urls.localUrlForTerminal}#${promptData.url}/${res.template.type}`
+			);
+		}
+	};
+
 	const maker = new fileMaker({
 		context: process.cwd(),
 		promptData,
-		tmpTemplateSrc
+		tmpTemplateSrc,
+		afterHandler
 	});
 
 	const spinner = ora();
 	spinner.text = "正在生成页面...";
 	spinner.color = "magenta";
 	spinner.start();
+
 	await maker.make();
+
 	spinner.stopAndPersist();
 
 	/* notify */
@@ -200,19 +228,4 @@ export default async function list(dir, cmd) {
 	await notifier.notify();
 
 	clearConsole();
-
-	if (urls.lanUrlForTerminal) {
-		console.log(
-			`  ${chalk.bold("Local:")}            ${urls.localUrlForTerminal}#${
-				promptData.url
-			}/list`
-		);
-		console.log(
-			`  ${chalk.bold("On Your Network:")}  ${urls.lanUrlForTerminal}#${
-				promptData.url
-			}/list`
-		);
-	} else {
-		console.log(`  ${urls.localUrlForTerminal}#${promptData.url}/list`);
-	}
 }
